@@ -12,22 +12,6 @@ public class Basket<E extends Fruit> {
         this.items = new ArrayList<>();
     }
 
-    public void add(E item) {
-        if (item == null) {
-            throw new NullPointerException();
-        }
-        items.add(item);
-    }
-
-    public E get(int index) {
-        return items.get(index);
-    }
-
-    // E - параметр, относящийся к экземпляру
-//    public static E getStatic(int index){
-//        return items.get(index);
-//    }
-
     public static void main(String[] args) {
         Basket<Pear> basket = new Basket<>();
         basket.add(new Pear());
@@ -41,5 +25,21 @@ public class Basket<E extends Fruit> {
 
 //        Basket b = new Basket();
 //        b.add(new Object());
+    }
+
+    public void add(E item) {
+        if (item == null) {
+            throw new NullPointerException();
+        }
+        items.add(item);
+    }
+
+    // E - параметр, относящийся к экземпляру
+//    public static E getStatic(int index){
+//        return items.get(index);
+//    }
+
+    public E get(int index) {
+        return items.get(index);
     }
 }

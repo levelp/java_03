@@ -6,15 +6,7 @@ import java.util.List;
  */
 public class GenericMethods<R> {
 
-    public <T> R genericInstanceMethod(T element, R element2) {
-        return null;
-    }
-
     public static <T> void genericStaticMethod(T element) {
-    }
-
-    public <T, E, P extends T> P genericMethod(List<T> list, E element) {
-        return null;
     }
 
     public static void main(String[] args) {
@@ -24,5 +16,13 @@ public class GenericMethods<R> {
         Integer i = m.genericMethod(new ArrayList<Number>(), false);
         // явное указание
         Integer result = m.<Number, Boolean, Integer>genericMethod(new ArrayList<>(), false);
+    }
+
+    public <T> R genericInstanceMethod(T element, R element2) {
+        return null;
+    }
+
+    public <T, E, P extends T> P genericMethod(List<T> list, E element) {
+        return null;
     }
 }
