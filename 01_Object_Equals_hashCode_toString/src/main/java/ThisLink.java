@@ -9,7 +9,7 @@ public class ThisLink {
     public static void main(String[] args) {
         //-->
         // Создаём журнал
-        Journal journal = new Journal();
+        Magazine journal = new Magazine();
 
         // И двух подписчиков
         User A = new User("Петя");
@@ -23,7 +23,13 @@ public class ThisLink {
         //<--
     }
 
-    static class Journal {
+    /**
+     * Журнал
+     */
+    static class Magazine {
+        /**
+         * Подписчики
+         */
         List<User> users = new ArrayList<>();
 
         //-->
@@ -36,7 +42,12 @@ public class ThisLink {
         }
         //<--
 
-        public void add(User user) {
+        /**
+         * Подписаться на журнал
+         *
+         * @param user
+         */
+        public void subscribe(User user) {
             users.add(user);
         }
     }
@@ -48,8 +59,8 @@ public class ThisLink {
             this.name = name;
         }
 
-        public void subscribe(Journal journal) {
-            journal.add(this);
+        public void subscribe(Magazine journal) {
+            journal.subscribe(this);
         }
 
         public void send(String name) {
