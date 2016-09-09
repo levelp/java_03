@@ -1,23 +1,82 @@
-# ~*~ 
+# ~*~ coding: utf-8 ~*~
+# Генерация README.md по специально размеченным исходникам
+# Добавьте doc.cmd в пути
 import os
 import sys
+import traceback
+import unittest
+import re
 
 PREFIX = u'//'
 
-sys.stdout = open("README.md", "w", encoding="utf-8")
+# Обрабатывать обычные комментарии
+STD_COMMENT = False
 
+# Стандартный комментарий для документирования
+PREFIX2 = u'///'
+
+ROOT_DIR = '.\\'
+
+# Предотвращение перезаписи README.md созданных не нами
+HEADER = '<!-- doc.py -->'
+README = "README.md"
+FORCE_OVERWRITE = False
+
+# Если очень нужно перезаписать, можно вызывать с ключом -force
+for arg in sys.argv:
+    if arg.lower() == "-force":
+        FORCE_OVERWRITE = True
+
+if not FORCE_OVERWRITE and os.path.isfile(README):
+    f = open(README, "r", encoding="utf-8")
+    # Читаем заголовок файла
+    header = f.readline().strip()
+    f.close()
+    if header.upper() != HEADER.upper():
+        print(README + ' have not ' + HEADER + ' - EXIT!')
+        exit(1)
+
+# Открываем README.md для записи
+sys.stdout = open(README, "w", encoding="utf-8")
+print(HEADER)
+
+# Открываем темы
+THEMES = "themes.md"
+if os.path.isfile(THEMES):
+    themes = open(THEMES, "w", encoding="utf-8")
+else:
+    themes = sys.stderr
 
 def get_extension(file_name):
     return os.path.splitext(file_name)[1]
 
+
 def lang(file_name):
+    """
+    Определение языка подсветки по имени файла
+    :param file_name: имя файла
+    """
     extension = get_extension(file_name)
     if extension in ['.cpp', '.c', '.h', '.hpp']:
         return 'cpp'
     if extension == '.java':
         return 'java'
-    return "TODO: doc.py Сделать обработчик **" + extension + "**";
+    return "TODO: doc.py Сделать обработчик **" + extension + "**"
 
+
+def is_header1(s):  # Подчёркивание заголовка 1
+    return re.match('\\={3,}', s.strip())
+
+
+def is_header2(s):  # Подчёркивание заголовка 2
+    return re.match('\\-{3,}', s.strip())
+
+
+def process_headers(prev, cur):
+    if is_header1(cur):
+        print("## " + prev, file=themes)
+    if is_header2(cur):
+        print("* " + prev, file=themes)
 
 
 def parse(file_name):
@@ -26,42 +85,68 @@ def parse(file_name):
     :return:
     """
     code = False
+    out = False
+    cur = ""
     with open(file_name, "r", encoding="utf-8-sig") as f:
         for line in f:
+            s = line.strip()
             if '//-->' in line:
                 print('``` ' + lang(file_name))
                 code = True
+                out = True
                 continue
-            if '//<--' in line:
+            elif '//<--' in line:
                 print('```')
+                print()
                 code = False
+                out = True
                 continue
-            if code:
+            elif code:
                 print(line.rstrip())
+                out = True
                 continue
-            s = line.strip()
-            if s.startswith(PREFIX):
-                print(s[len(PREFIX):].strip())
+            elif s.startswith(PREFIX2):
+                prev = cur
+                cur = s[len(PREFIX2):].strip()
+                print(cur)
+                process_headers(prev, cur)
+                out = True
+                continue
+            elif s.startswith(PREFIX) and STD_COMMENT:
+                prev = cur
+                cur = s[len(PREFIX):].strip()
+                print(cur)
+                process_headers(prev, cur)
+                out = True
+                continue
+    return out
 
 
-from os import listdir
-from os.path import isfile, join
+def filename2link(filename):
+    if filename.startswith(ROOT_DIR):
+        filename = filename[len(ROOT_DIR):].strip()
+    # Исправление разделителя каталогов (file separator) в путях
+    filename = filename.replace("\\", "/")
+    return '[' + filename + '](' + filename + ')'
 
-mypath = "."
+
 extensions = [".cpp", ".c", ".h", ".hpp", ".java", ".md"]
 special_files = ["pom.xml"]
 
 all_files = []
 for root, dirs, files in os.walk("."):
     for name in files:
+        # Пропускаем сгенерированные файлы Qt
+        if name.startswith('moc_'): continue
+        if name.startswith('ui_'): continue
+        # Пропускаем файлы в другой кодировке
+        if "_cp866" in name: continue
+        if "_win1251" in name: continue
         if (get_extension(name) in extensions) or (name in special_files):
             # Пропускаем готовые README.md
-            # if name.upper() == "README.md".upper():
-            # continue
+            if name.upper() == README.upper():
+                continue
             file_name = os.path.join(root, name)
-            #print(file_name)
-            #if name == "README.md":
-            #    continue
             if file_name == '.\\README.md':
                 continue
             all_files.append(file_name)
@@ -69,14 +154,39 @@ for root, dirs, files in os.walk("."):
 for file_name in sorted(all_files):
     # Markdown файлы просто передаём на выход не меняя
     if get_extension(file_name).lower() == ".md":
-        print()
+        prev = ""  # Предыдущая строка
         for line in open(file_name, 'r', encoding="utf-8"):
-            print(line.rstrip())
+            cur = line.rstrip()  # Текущая строка
+            print(cur)
+            process_headers(prev, cur)
+            prev = cur
         print()
         continue
-    # print(file_name)
-    parse(file_name)
+    # Если были какие-то строчки из файла,
+    # добавляем ссылку на файл
+    try:
+        if parse(file_name):
+            print(filename2link(file_name))
+            print()
+    except:  # Ошибка разбора файла
+        traceback.print_exc(file=sys.stderr)
+        print("FILE: " + file_name, file=sys.stderr)
+
+themes.close()
 
 
-# [f for f in listdir(mypath) if isfile(join(mypath, f))]
+class TestRating(unittest.TestCase):
+    """ Модульные тесты """
+
+    def test_filename2link(self):
+        """ Разделение команды на участников """
+        self.assertEquals('[main.cpp](main.cpp)', filename2link('.\main.cpp'))
+        self.assertEquals('[a/b.cpp](a/b.cpp)', filename2link('.\\a\\b.cpp'))
+
+    def test_headers(self):
+        self.assertTrue(is_header1("===="))
+        self.assertFalse(is_header1("="))
+        self.assertFalse(is_header1("---"))
+        self.assertFalse(is_header1("==2=="))
+        self.assertTrue(is_header2("-------"))
 

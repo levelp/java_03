@@ -1,14 +1,71 @@
+<!-- doc.py -->
+Установка и настройка Apache Tomcat: http://tomcat.apache.org
+-------------------------------------------------------------
+* http://tomcat.apache.org/download-80.cgi http://apache.cu.be/tomcat/tomcat-8/v8.5.5/bin/apache-tomcat-8.5.5.zip - скачивание Apache Tomcat
+* Распаковать в папку на диске, например в D:\tomcat
+* Настройка и запуск: https://github.com/levelp/tomcat
+
+
+
+
+Object, equals, hashCode, toString
+----------------------------------
+
+
+Использование ссылки this
+-------------------------
 ``` java
+        // Создаём журнал
+        Journal journal = new Journal();
+
+        // И двух подписчиков
+        User A = new User("Петя");
+        User B = new User("Вася");
+        A.subscribe(journal);
+        B.subscribe(journal);
+
+        // Два выпуска журнала
+        journal.release("Сентябрь 2014");
+        journal.release("Октябрь 2014");
+```
+
+``` java
+        // Когда журнал выходит
+        public void release(String name) {
+            for (User user : users) {
+                // Он отправляется всем подписчикам
+                user.send(name);
+            }
+        }
+```
+
+[01_Object_Equals_hashCode_toString/src/main/java/ThisLink.java](01_Object_Equals_hashCode_toString/src/main/java/ThisLink.java)
+
+Строки в Java: управление строками в java, функции для работы со строками
+-------------------------------------------------------------------------
+
+List
+[02_Strings/src/test/java/StringsTest.java](02_Strings/src/test/java/StringsTest.java)
+
+List, Set, Map, TreeMap, Iterator, ListIterator, Collections. empty
+-------------------------------------------------------------------
+
+https://habrahabr.ru/post/128269/
+Структуры данных в картинках. ArrayList
+
+
+``` java
+
 /**
  * Бинарное дерево поиска
  * Левый наследник всегда меньше правого.
  * Для балансировки: CartesianTree? Декартово дерево поиска?
  */
-public class BinaryTree<T extends Comparable> implements SearchTree<T> {
+class BinaryTree<T extends Comparable> implements SearchTree<T> {
     /**
      * Корневой элемент дерева
      */
-    public TreeNode root = null;
+    TreeNode root = null;
 
     /**
      * Добавление нового значения в дерево поиска
@@ -77,19 +134,19 @@ public class BinaryTree<T extends Comparable> implements SearchTree<T> {
     /**
      * Узел дерева
      */
-    class TreeNode {
-        public T value;
-        public TreeNode left = null;
-        public TreeNode right = null;
+    public class TreeNode {
+        T value;
+        TreeNode left = null;
+        TreeNode right = null;
 
-        public TreeNode(T value) {
+        TreeNode(T value) {
             this.value = value;
         }
 
         /**
          * @return глубина дерева
          */
-        public int deep() {
+        int deep() {
             int res = 1;
             if (left != null)
                 res = max(res, left.deep() + 1);
@@ -100,27 +157,15 @@ public class BinaryTree<T extends Comparable> implements SearchTree<T> {
     }
 }
 ```
-Фиктивный узел (без значения)
-Игнорируем такое же значение
-Это фиктивный узел => мы не нашли значения
-Нашли нужное значение
-Тернарный оператор
-(УСЛОВИЕ) ? ЗНАЧЕНИЕ_ЕСЛИ_TRUE : ЗНАЧЕНИЕ_ЕСЛИ_FALSE
-Работает так же, как:
-if (value == null)
-result = 0;
-else
-result = 1;
-TODO: join + split
-здесь будут операции...
-Интерфейс =  Класс с реализацией этого интерфейса
-Добавить новое значение
-Добавляем узел с большим значением
-Генератор случайных чисел
-Проверочный set
+
+[03_Collections/src/main/java/BinaryTree.java](03_Collections/src/main/java/BinaryTree.java)
+
+List
+[03_Collections/src/test/java/A_ListTest.java](03_Collections/src/test/java/A_ListTest.java)
+
 ``` java
         // Интерфейс =  Класс с реализацией этого интерфейса
-        BinaryTreeNode<Integer> tree = new BinaryTreeNode<Integer>();
+        BinaryTreeNode<Integer> tree = new BinaryTreeNode<>();
         assertFalse(tree.find(3));
         tree.add(3);
         assertTrue(tree.find(3));
@@ -138,69 +183,39 @@ TODO: join + split
         assertTrue(tree.find(334));
         assertFalse(tree.find(7789));
 ```
-Оптимизация: final List<T> l = new ArrayList<T>(array.length);
-Интерфейс =  Класс с реализацией этого интерфейса
-Очередь: Queue<Integer>
-Метод add() добавить в конец списка
-size() - количество элементов в списке
-get(index) - получить элемент с заданным индексом
-Добавить элемент в заданнную позицию (элементы с большими индексами сдвигаются вправо)
-Теперь 3 элемента: {7, 11, 10}
-Преобразование в массив
-Добавляем сразу массив элементов
-remove(Object o) - удаление элемента по значению
-contains(Object o) - наличия элемента в списке
-Проверка, содержит ли один список другой список
-set(int index, E element)
-Список с индекса по индекс [fromIndex, toIndex)
-1, 1, 2..
-Получаем итератор
-Удаляем элемент
-i.remove(); // java.lang.UnsupportedOperationException
-Метод add() добавить в множество
-size() - количество элементов в списке
-get(index) - получить элемент с заданным индексом
-Добавляем сразу массив элементов
-remove(Object o) - удаление элемента по значению
-contains(Object o) - наличия элемента в списке
-Проверка, содержит ли один список другой список
-Получаем итератор
-Удаляем элемент
-i.remove(); // java.lang.UnsupportedOperationException
 
-Date, Calendar, DateFormat (Format). Joda-Time
-----------------------------------------------
+[03_Collections/src/test/java/BinaryTreeTest.java](03_Collections/src/test/java/BinaryTreeTest.java)
 
-
-
-Все возможности форматирования даты:
-https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
-
-Форматирование даты:
-* yyyy - год 4 цифры
-* MM - месяц 2 цифры
-* dd - день в месяце 2 цифры
-* HH - час 2 цифры
-* mm - минута 2 цифры
-* ss - секунда 2 цифры
 ``` java
-        Date date = new Date();
+        Date date = new Date(); // Текущая дата и время
         System.out.println("date = " + date);
         SimpleDateFormat dateFormat =
-           new SimpleDateFormat("'Дата и время:' dd.MM.yyyy HH:mm:ss");
+                new SimpleDateFormat("'Дата и время:' dd.MM.yyyy HH:mm:ss");
 
+        // Форматирование даты
         System.out.println(dateFormat.format(date));
 
+        // Разбор даты
         SimpleDateFormat russianDate =
                 new SimpleDateFormat("dd.MM.yyyy");
         Date date2 = russianDate.parse("11.10.2014");
         System.out.println(date2);
 
+        SimpleDateFormat chineseDate =
+                new SimpleDateFormat("yyyy-MM-dd");
+        Date date3 = chineseDate.parse("2015-09-15");
+        System.out.println(
+                russianDate.format(date3));
+
         System.out.println(dateFormat.format(date2));
 
         // Изменяю время, ставлю 10 часов
-        date.setHours(10);
+        date.setHours(10); // Deprecated
+        //date.setDate();
 ```
+
+[04_DateTime/src/main/java/A_DateDemo.java](04_DateTime/src/main/java/A_DateDemo.java)
+
 ``` java
         Calendar now = Calendar.getInstance();
         System.out.println("День месяца: " +
@@ -222,7 +237,8 @@ https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
 
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("'Дата и время:' dd.MM.yyyy HH:mm:ss");
-        System.out.println(dateFormat.format(now.getTime()));
+        Date date = now.getTime();
+        System.out.println(dateFormat.format(date));
 
         SimpleDateFormat dateFormat2 =
                 new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -240,7 +256,7 @@ https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
         SimpleDateFormat rusMonth =
                 new SimpleDateFormat("MMMMM", LOCALE_RU);
 
-        System.out.println(rusMonth.format(now.getTime()));
+        System.out.println(rusMonth.format(date));
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(rusMonth.parse("Сентябрь"));
@@ -260,6 +276,9 @@ https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
         date2.add(Calendar.HOUR, -30);
         System.out.println(dateFormat.format(date2.getTime()));
 ```
+
+[04_DateTime/src/main/java/B_CalendarDemo.java](04_DateTime/src/main/java/B_CalendarDemo.java)
+
 ``` java
         LocalDate nowDate = new LocalDate();
         LocalDateTime now = new LocalDateTime();
@@ -286,7 +305,67 @@ https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
         System.out.println(russianDate.format(date.toDate()));
 ```
 
-﻿JavaFX
-======
+[04_DateTime/src/main/java/C_JodaTimeDemo.java](04_DateTime/src/main/java/C_JodaTimeDemo.java)
+
+``` java
+        Date date = new Date();
+        System.out.println("date = " + date);
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat("'Дата и время:' dd.MM.yyyy HH:mm:ss");
+
+        System.out.println(dateFormat.format(date));
+
+        SimpleDateFormat russianDate =
+                new SimpleDateFormat("dd.MM.yyyy");
+        Date date1 = russianDate.parse("12.09.2015");
+        Date date2 = russianDate.parse("11.10.2014");
+        assertTrue(date2.after(date1));
+        assertTrue(date2.before(date1));
+        assertTrue(date1.after(date1));
+        assertTrue(date1.before(date1));
+
+        System.out.println(date2);
+
+        System.out.println(dateFormat.format(date2));
+
+        // Изменяю время, ставлю 10 часов
+        date.setHours(10); // Depreacted
+```
+
+[04_DateTime/src/test/java/A_DateTest.java](04_DateTime/src/test/java/A_DateTest.java)
+
+Базовый класс для всех исключений:
+Throwable
+
+Checked - наследники класса Exception
+Unchecked:
+  - RuntimeException -
+  - Error - критические ошибки, которые, как правило, нет смысла ловить внутри вашей
+  прикладной программы
+
+
+
+﻿Демонстрационные проекты
+------------------------
+https://github.com/PetrKudr/webissues.git
+
+
+
+Домашнее задание
+----------------
+1. Посмотреть (запустить, разобрать, выполнить в режиме отладки) примеры к уроку:
+ * https://github.com/levelp/HelloJSP.git
+ * https://github.com/levelp/WebInterface.git
+2. Реализовать решение своей задачи с таким же Web-интерфейсом:
+ * Генерация скобочных последовательностей ...или...
+ * Разложить число на слагаемые
+ * ....какая-то другая задача....
+ * Начальная или самая важная страница вашего приложения (проекта)
+
+Полезные статьи для чтения
+--------------------------
+* https://habrahabr.ru/post/248865/ - опыт прохождения собеседования на позицию java developer
+* https://habrahabr.ru/post/309222/ - maven
+
 
 

@@ -1,4 +1,6 @@
 <!-- doc.py -->
+List, Set, Map, TreeMap, Iterator, ListIterator, Collections. empty
+-------------------------------------------------------------------
 
 https://habrahabr.ru/post/128269/
 Структуры данных в картинках. ArrayList
@@ -109,6 +111,9 @@ class BinaryTree<T extends Comparable> implements SearchTree<T> {
 ```
 
 [src/main/java/BinaryTree.java](src/main/java/BinaryTree.java)
+
+List
+[src/test/java/A_ListTest.java](src/test/java/A_ListTest.java)
 
 ``` java
         // Интерфейс =  Класс с реализацией этого интерфейса
