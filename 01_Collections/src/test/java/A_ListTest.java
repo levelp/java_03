@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 /**
  * Список элементов
  */
-public class ListTest {
+public class A_ListTest {
     static <T> List<T> arrayToList(final T[] array) {
         final List<T> l = new ArrayList<T>();
         // Оптимизация: final List<T> l = new ArrayList<T>(array.length);

@@ -11,11 +11,11 @@ https://habrahabr.ru/post/128269/
  * Левый наследник всегда меньше правого.
  * Для балансировки: CartesianTree? Декартово дерево поиска?
  */
-public class BinaryTree<T extends Comparable> implements SearchTree<T> {
+class BinaryTree<T extends Comparable> implements SearchTree<T> {
     /**
      * Корневой элемент дерева
      */
-    public TreeNode root = null;
+    TreeNode root = null;
 
     /**
      * Добавление нового значения в дерево поиска
@@ -84,19 +84,19 @@ public class BinaryTree<T extends Comparable> implements SearchTree<T> {
     /**
      * Узел дерева
      */
-    class TreeNode {
-        public T value;
-        public TreeNode left = null;
-        public TreeNode right = null;
+    public class TreeNode {
+        T value;
+        TreeNode left = null;
+        TreeNode right = null;
 
-        public TreeNode(T value) {
+        TreeNode(T value) {
             this.value = value;
         }
 
         /**
          * @return глубина дерева
          */
-        public int deep() {
+        int deep() {
             int res = 1;
             if (left != null)
                 res = max(res, left.deep() + 1);
@@ -112,7 +112,7 @@ public class BinaryTree<T extends Comparable> implements SearchTree<T> {
 
 ``` java
         // Интерфейс =  Класс с реализацией этого интерфейса
-        BinaryTreeNode<Integer> tree = new BinaryTreeNode<Integer>();
+        BinaryTreeNode<Integer> tree = new BinaryTreeNode<>();
         assertFalse(tree.find(3));
         tree.add(3);
         assertTrue(tree.find(3));
