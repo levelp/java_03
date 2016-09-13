@@ -11,6 +11,7 @@ public class MainForm {
 
     public MainForm() {
         shiftButton.addActionListener(
+                // Обработчик событий в Java8
                 actionEvent -> {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                     LocalDate srcDate = LocalDate.parse(srcDateField.getText(), formatter);

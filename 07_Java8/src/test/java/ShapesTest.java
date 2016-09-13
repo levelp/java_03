@@ -20,5 +20,6 @@ public class ShapesTest {
         Circle circle = new Circle(1.0, 0.5, 3);
         assertEquals("Круг", circle.getName());
         assertEquals("Круг  центр: (1.0; 0.5)  радиус = 3.0", circle.presentation());
+        System.out.println("circle.presentation() = " + circle.presentation());
     }
 }

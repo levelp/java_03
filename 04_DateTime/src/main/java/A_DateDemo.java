@@ -20,7 +20,8 @@ public class A_DateDemo {
         Date date = new Date(); // Текущая дата и время
         System.out.println("date = " + date);
         SimpleDateFormat dateFormat =
-                new SimpleDateFormat("'Дата и время:' dd.MM.yyyy HH:mm:ss");
+                new SimpleDateFormat(
+                        "'Дата и время:' dd.MM.yyyy HH:mm:ss");
 
         // Форматирование даты
         System.out.println(dateFormat.format(date));
@@ -31,6 +32,8 @@ public class A_DateDemo {
         Date date2 = russianDate.parse("11.10.2014");
         System.out.println(date2);
 
+        // MM/dd/yyyy - американский
+        // Китайский формат даты
         SimpleDateFormat chineseDate =
                 new SimpleDateFormat("yyyy-MM-dd");
         Date date3 = chineseDate.parse("2015-09-15");
@@ -41,6 +44,8 @@ public class A_DateDemo {
 
         // Изменяю время, ставлю 10 часов
         date.setHours(10); // Deprecated
+        date.setMinutes(12);
+        date.setSeconds(11);
         //date.setDate();
         //<--
     }
