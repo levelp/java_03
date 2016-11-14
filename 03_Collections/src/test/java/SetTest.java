@@ -50,14 +50,14 @@ public class SetTest {
         assertArrayEquals(new Integer[]{2, 5, 6, 7, 10}, setToArray(intSet));
 
         intSet.addAll(Arrays.asList(88, 99));
-        assertArrayEquals(new Integer[]{2, 5, 6, 7, 10, 88, 99}, setToArray(intSet));
+        assertEquals(toSet(2, 5, 6, 7, 10, 88, 99), intSet);
 
         // remove(Object o) - удаление элемента по значению
         assertTrue(intSet.remove(99)); // А в множестве можно так писать!
-        assertArrayEquals(new Integer[]{2, 5, 6, 7, 10, 88}, setToArray(intSet));
+        assertEquals(toSet(2, 5, 6, 7, 10, 88), intSet);
 
         assertFalse("Такого элемента нет", intSet.remove(1)); // Удалить элемент со значением 1
-        assertArrayEquals(new Integer[]{2, 5, 6, 7, 10, 88}, setToArray(intSet));
+        assertEquals(toSet(2, 5, 6, 7, 10, 88), intSet);
 
         // contains(Object o) - наличия элемента в списке
         assertTrue(intSet.contains(7));
@@ -66,6 +66,10 @@ public class SetTest {
 
         // Проверка, содержит ли один список другой список
         assertTrue("Содержатся все эти элементы", intSet.containsAll(arrayToList(new Integer[]{7, 10, 2})));
+    }
+
+    private HashSet<Integer> toSet(Integer... array) {
+        return new HashSet<>(Arrays.asList(array));
     }
 
     @Test

@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 //
@@ -31,10 +32,24 @@ public class A_DateTest extends Assert {
                 new SimpleDateFormat("dd.MM.yyyy");
         Date date1 = russianDate.parse("12.09.2015");
         Date date2 = russianDate.parse("11.10.2014");
-        assertTrue(date2.after(date1));
+        // Сравнение дат
+        assertFalse(date2.after(date1));
         assertTrue(date2.before(date1));
-        assertTrue(date1.after(date1));
-        assertTrue(date1.before(date1));
+        assertTrue(date1.after(date2));
+        assertFalse(date1.before(date2));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date1);
+        assertEquals(2015, calendar.get(Calendar.YEAR));
+        assertEquals(8, calendar.get(Calendar.MONTH));
+        assertEquals(Calendar.SEPTEMBER, calendar.get(Calendar.MONTH));
+        assertEquals(12, calendar.get(Calendar.DATE));
+        assertEquals(12, calendar.get(Calendar.DAY_OF_MONTH));
+        assertEquals(7, calendar.get(Calendar.DAY_OF_WEEK));
+        assertEquals(255, calendar.get(Calendar.DAY_OF_YEAR));
+        assertEquals(0, calendar.get(Calendar.HOUR));
+        assertEquals(0, calendar.get(Calendar.MINUTE));
+        assertEquals(0, calendar.get(Calendar.SECOND));
 
         System.out.println(date2);
 

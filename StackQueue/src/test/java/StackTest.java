@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.Test;
 import stack.Stack;
+import stack.StackEmptyException;
 
 public class StackTest extends Assert {
     @Test
@@ -12,5 +13,12 @@ public class StackTest extends Assert {
         assertEquals(3, stack.pop().intValue());
         assertEquals(2, stack.pop().intValue());
         assertEquals(1, stack.pop().intValue());
+
+        try {
+            stack.pop();
+            fail("StackEmptyException expected");
+        } catch (StackEmptyException exception) {
+            assertEquals("Стек пуст", exception.getMessage());
+        }
     }
 }

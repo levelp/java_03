@@ -36,8 +36,7 @@ public class Point {
     @Override
     public int hashCode() {
         // http://stackoverflow.com/questions/27581/what-issues-should-be-considered-when-overriding-equals-and-hashcode-in-java
-        return 1; //Double.hashCode(x) +
-        //Double.hashCode(y);
+        return Double.hashCode(x) + Double.hashCode(y);
     }
 
     @Override
